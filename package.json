@@ -34,6 +34,7 @@
     "gulp-watch": "^4.3.5"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "gulp-rename": "^1.2.2",
     "vinyl-source-stream": "^1.1.0"
   }

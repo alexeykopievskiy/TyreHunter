@@ -4,23 +4,17 @@ var del = require('del');                          // NodeJS delete files
 var gulp = require('gulp');                        // Gulp
 var gulpJade = require('gulp-jade');               // Jade
 var sass = require('gulp-sass');                   // Sass/SCSS
-var scsslint = require('gulp-scss-lint');          // SCSS linter
 var cssmin = require('gulp-cssmin');               // CSS minification
 var rename = require('gulp-rename');               // Rename files
 var autoprefixer = require('gulp-autoprefixer');   // Autoprefixer
 var sourcemaps = require('gulp-sourcemaps');       // Source Maps
-var uglify = require('gulp-uglify');               // Compress JS
 var newer = require('gulp-newer');                 // Only new files by date
 var debug = require('gulp-debug');                 // Show debug info
 var browserSync = require('browser-sync');         // Browser Sync
-var watch = require('gulp-watch');                 // Watch
 var notify = require('gulp-notify');               // Явно показывает уведомление об ошибке`
 var plumber = require('gulp-plumber');             // модифицирует .pipe на всех потоках таска
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
-var babelify = require('babelify');
-var eslint = require('gulp-eslint');
-var jscs = require('gulp-jscs');
 
 
 
@@ -108,9 +102,24 @@ gulp.task('clean', gulp.series('sample:clean',  function(){
   return del(['dist/*', 'site']);
 }));
 
+gulp.task('bootstrap:js', function(){
+  return gulp.src(['node_modules/bootstrap/dist/js/*.js'])
+    .pipe(gulp.dest('site/sample/lib/js'))
+});
+gulp.task('bootstrap:fonts', function(){
+  return gulp.src(['node_modules/bootstrap/dist/fonts/*.*'])
+    .pipe(gulp.dest('site/sample/lib/fonts'))
+});
+gulp.task('bootstrap:css', function(){
+  return gulp.src(['node_modules/bootstrap/dist/css/*.css'])
+    .pipe(gulp.dest('site/sample/lib/css'))
+});
+
+gulp.task('bootstrap', gulp.series('bootstrap:js', 'bootstrap:fonts', 'bootstrap:css'));
+
 gulp.task('sample:css', gulp.series('scss', 'sample:css:copy'));
 
-gulp.task('sample', gulp.series( 'sample:build', 'sample:css', 'sample:fonts:copy', 'sample:js:copy', 'image', 'js'));
+gulp.task('sample', gulp.series( 'sample:build', 'sample:css', 'sample:fonts:copy', 'sample:js:copy', 'image', 'js', 'bootstrap'));
 
 
 
